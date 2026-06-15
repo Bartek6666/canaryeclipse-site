@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <title>Canary Eclipse — free app for the 12 August 2026 eclipse</title>
+  <meta name="description" content="Free Android app for observing the partial solar eclipse of 12 August 2026 from the Canary Islands. Per-island timing, sun position, AR sun-finder, calima outlook.">
+  <meta property="og:title" content="Canary Eclipse — 12 August 2026">
+  <meta property="og:description" content="Free Android app for the partial solar eclipse over the Canary Islands.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://canaryeclipse.com">
+  <style>
+    :root {
+      --bg: #0F131B;
+      --surface: #1C2028;
+      --border: rgba(255, 255, 255, 0.10);
+      --text: #DFE2EE;
+      --muted: #9E8F78;
+      --accent: #FFBA20;
+      --accent-soft: #FFDCA1;
+      --ink: #0F131B;
+      --warn-bg: rgba(255, 186, 32, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--accent-soft);
+    }
+    .lang-switcher { display: flex; gap: 8px; }
+    .lang-switcher button {
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .lang-switcher button:hover { border-color: var(--accent); }
+    .lang-switcher button[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--ink);
+      border-color: var(--accent);
+    }
+    .lang-switcher button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+    article h2 {
+      font-size: 30px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    article .meta { color: var(--muted); font-size: 14px; margin: 0 0 28px; }
+    article h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent-soft);
+      margin: 36px 0 12px;
+    }
+    article p { margin: 0 0 16px; }
+    ul.features { list-style: none; padding: 0; margin: 0 0 16px; }
+    ul.features li { position: relative; padding: 6px 0 6px 26px; }
+    ul.features li::before {
+      content: "";
+      position: absolute;
+      left: 4px; top: 14px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    ol.steps { margin: 0 0 8px; padding-left: 22px; }
+    ol.steps li { padding: 4px 0; }
+    .download {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 17px;
+      text-decoration: none;
+      padding: 16px 28px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(255, 186, 32, 0.25);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .download:hover { transform: translateY(-1px); box-shadow: 0 8px 26px rgba(255, 186, 32, 0.35); }
+    .download[aria-disabled="true"] { opacity: 0.5; pointer-events: none; box-shadow: none; }
+    .dl-meta { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+    .dl-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      margin: 28px 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 28px;
+    }
+    .dl-wrap .col { flex: 1 1 240px; }
+    .qr {
+      width: 132px; height: 132px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      flex: 0 0 auto;
+    }
+    .qr img { width: 100%; height: 100%; display: block; }
+    .warn {
+      background: var(--warn-bg);
+      border: 1px solid rgba(255, 186, 32, 0.35);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin: 28px 0;
+    }
+    .warn strong { color: var(--accent-soft); }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--accent-soft); }
+    a { color: var(--accent-soft); }
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌒 Canary Eclipse</h1>
+    <nav class="lang-switcher" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-set-lang="es" aria-pressed="false">ES</button>
+      <button type="button" data-set-lang="pl" aria-pressed="false">PL</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ENGLISH -->
+    <article data-lang="en" class="active" lang="en">
+      <h2>See the 12 August 2026 eclipse from the Canaries</h2>
+      <p class="meta">Free Android app · Partial solar eclipse · 12 Aug 2026, ~19:53 WEST · Canary Islands</p>
+      <p>On <strong>12 August 2026</strong> the Sun sets partly eclipsed over the Canary Islands — up to ~78% covered, very low on the horizon. Exactly <em>where</em> and <em>when</em> to look changes from island to island. This free app works it out for your spot.</p>
+      <h3>What it does</h3>
+      <ul class="features">
+        <li>Exact eclipse times (first contact, maximum, sunset) for any point on the islands</li>
+        <li>Sun altitude &amp; azimuth at maximum — so you know where to aim</li>
+        <li>AR sun-finder: point your phone and line up where the Sun will be</li>
+        <li>Calima (Saharan dust) outlook and a clear-horizon view-quality score</li>
+        <li>Works for curated viewpoints, Google Places search, or your live GPS</li>
+      </ul>
+
+      <div class="dl-wrap">
+        <div class="col">
+          <a class="download" data-apk href="#" aria-disabled="true">⬇ Download for Android</a>
+          <p class="dl-meta">Android 7.0+ · APK (sideload) · free, no ads, no account</p>
+        </div>
+        <div class="qr" aria-hidden="true"><img src="qr.png" alt="QR code to canaryeclipse.com"></div>
+      </div>
+
+      <h3>How to install</h3>
+      <ol class="steps">
+        <li>Tap <strong>Download for Android</strong> above.</li>
+        <li>Open the downloaded <code>.apk</code> file.</li>
+        <li>If prompted, allow <em>“Install from unknown sources”</em> for your browser, then confirm <strong>Install</strong>.</li>
+      </ol>
+
+      <div class="warn">
+        <p style="margin:0"><strong>⚠ Eye safety.</strong> Never look at the Sun — even partly eclipsed — without certified <strong>ISO 12312-2</strong> solar eclipse glasses or filters. This app does not replace eye protection. Standard sunglasses are <em>not</em> safe.</p>
+      </div>
+    </article>
+
+    <!-- ESPAÑOL -->
+    <article data-lang="es" lang="es">
+      <h2>Observa el eclipse del 12 de agosto de 2026 desde Canarias</h2>
+      <p class="meta">App Android gratuita · Eclipse parcial de Sol · 12 ago 2026, ~19:53 WEST · Islas Canarias</p>
+      <p>El <strong>12 de agosto de 2026</strong> el Sol se pone parcialmente eclipsado sobre Canarias — hasta un ~78% cubierto, muy bajo en el horizonte. <em>Dónde</em> y <em>cuándo</em> mirar cambia de una isla a otra. Esta app gratuita lo calcula para tu punto exacto.</p>
+      <h3>Qué hace</h3>
+      <ul class="features">
+        <li>Horas exactas del eclipse (primer contacto, máximo, puesta de Sol) para cualquier punto de las islas</li>
+        <li>Altitud y azimut del Sol en el máximo — para saber hacia dónde apuntar</li>
+        <li>Buscador del Sol en realidad aumentada: apunta el móvil y alinéate con el Sol</li>
+        <li>Previsión de calima y una puntuación de calidad de observación según el horizonte</li>
+        <li>Funciona con puntos seleccionados, búsqueda de Google Places o tu GPS en directo</li>
+      </ul>
+
+      <div class="dl-wrap">
+        <div class="col">
+          <a class="download" data-apk href="#" aria-disabled="true">⬇ Descargar para Android</a>
+          <p class="dl-meta">Android 7.0+ · APK (instalación manual) · gratis, sin anuncios, sin cuenta</p>
+        </div>
+        <div class="qr" aria-hidden="true"><img src="qr.png" alt="Código QR a canaryeclipse.com"></div>
+      </div>
+
+      <h3>Cómo instalar</h3>
+      <ol class="steps">
+        <li>Pulsa <strong>Descargar para Android</strong> arriba.</li>
+        <li>Abre el archivo <code>.apk</code> descargado.</li>
+        <li>Si aparece el aviso, permite <em>«Instalar apps desconocidas»</em> para tu navegador y confirma <strong>Instalar</strong>.</li>
+      </ol>
+
+      <div class="warn">
+        <p style="margin:0"><strong>⚠ Seguridad ocular.</strong> Nunca mires al Sol —ni siquiera parcialmente eclipsado— sin gafas o filtros solares certificados <strong>ISO 12312-2</strong>. Esta app no sustituye la protección ocular. Las gafas de sol normales <em>no</em> son seguras.</p>
+      </div>
+    </article>
+
+    <!-- POLSKI -->
+    <article data-lang="pl" lang="pl">
+      <h2>Zobacz zaćmienie 12 sierpnia 2026 z Wysp Kanaryjskich</h2>
+      <p class="meta">Darmowa apka na Androida · Częściowe zaćmienie Słońca · 12.08.2026, ~19:53 WEST · Wyspy Kanaryjskie</p>
+      <p><strong>12 sierpnia 2026</strong> Słońce zachodzi częściowo zaćmione nad Kanarami — zakryte do ~78%, nisko nad horyzontem. <em>Gdzie</em> i <em>kiedy</em> patrzeć zależy od wyspy. Ta darmowa apka liczy to dla Twojego dokładnego miejsca.</p>
+      <h3>Co potrafi</h3>
+      <ul class="features">
+        <li>Dokładne czasy zaćmienia (pierwszy kontakt, maksimum, zachód Słońca) dla dowolnego punktu wysp</li>
+        <li>Wysokość i azymut Słońca w maksimum — wiesz, gdzie celować</li>
+        <li>Wyszukiwarka Słońca w AR: skieruj telefon i ustaw się tam, gdzie będzie Słońce</li>
+        <li>Prognoza kalimy (pyłu znad Sahary) i ocena jakości obserwacji wg horyzontu</li>
+        <li>Działa dla gotowych punktów, wyszukiwarki Google Places albo Twojego GPS na żywo</li>
+      </ul>
+
+      <div class="dl-wrap">
+        <div class="col">
+          <a class="download" data-apk href="#" aria-disabled="true">⬇ Pobierz na Androida</a>
+          <p class="dl-meta">Android 7.0+ · APK (instalacja ręczna) · za darmo, bez reklam, bez konta</p>
+        </div>
+        <div class="qr" aria-hidden="true"><img src="qr.png" alt="Kod QR do canaryeclipse.com"></div>
+      </div>
+
+      <h3>Jak zainstalować</h3>
+      <ol class="steps">
+        <li>Kliknij <strong>Pobierz na Androida</strong> powyżej.</li>
+        <li>Otwórz pobrany plik <code>.apk</code>.</li>
+        <li>Jeśli pojawi się pytanie, zezwól na <em>„Instalowanie z nieznanych źródeł”</em> dla przeglądarki i potwierdź <strong>Instaluj</strong>.</li>
+      </ol>
+
+      <div class="warn">
+        <p style="margin:0"><strong>⚠ Bezpieczeństwo wzroku.</strong> Nigdy nie patrz na Słońce — nawet częściowo zaćmione — bez certyfikowanych okularów lub filtrów <strong>ISO 12312-2</strong>. Ta apka nie zastępuje ochrony oczu. Zwykłe okulary przeciwsłoneczne <em>nie</em> są bezpieczne.</p>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <p><a href="https://privacy.canaryeclipse.com">Privacy policy</a> · <a href="mailto:contact@canaryeclipse.com">contact@canaryeclipse.com</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      var APK_URL = "https://github.com/Bartek6666/canaryeclipse-site/releases/download/v1.0.0/canary-eclipse-v1.0.0.apk";
+      var buttons = document.querySelectorAll('[data-set-lang]');
+      var articles = document.querySelectorAll('[data-lang]');
+
+      function setLang(lang) {
+        articles.forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-lang') === lang); });
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang)); });
+        document.documentElement.lang = lang;
+        try { localStorage.setItem('ce_lang', lang); } catch (e) {}
+      }
+      buttons.forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.getAttribute('data-set-lang')); });
+      });
+      var stored;
+      try { stored = localStorage.getItem('ce_lang'); } catch (e) {}
+      var initial = stored || (navigator.language || 'en').slice(0, 2);
+      if (!['en', 'es', 'pl'].includes(initial)) initial = 'en';
+      setLang(initial);
+
+      // Wire download buttons once a real APK URL is present.
+      if (APK_URL && APK_URL.indexOf('__APK') !== 0) {
+        document.querySelectorAll('[data-apk]').forEach(function (el) {
+          el.setAttribute('href', APK_URL);
+          el.setAttribute('aria-disabled', 'false');
+          el.setAttribute('download', '');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
