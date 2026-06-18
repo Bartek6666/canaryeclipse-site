@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
   <meta name="robots" content="index, follow">
   <title>Canary Eclipse — free app for the 12 August 2026 eclipse</title>
@@ -11,427 +11,389 @@
   <meta property="og:description" content="Free Android app for the partial solar eclipse over the Canary Islands.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://canaryeclipse.com">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: {
+        colors: {
+          "primary": "#ffdea7", "on-primary": "#422d00",
+          "primary-container": "#ffba20", "on-primary-container": "#6d4c00",
+          "secondary-container": "#5a4316", "on-secondary-container": "#d1b179",
+          "background": "#0f131b", "on-background": "#dfe2ee",
+          "surface": "#0f131b", "on-surface": "#dfe2ee",
+          "on-surface-variant": "#d5c4ac", "outline": "#9d8f79",
+          "surface-container-lowest": "#0a0e16", "surface-container-low": "#181c24",
+          "surface-container": "#1c2028", "surface-container-high": "#262a33",
+          "surface-container-highest": "#31353e",
+          "primary-fixed-dim": "#ffba23",
+          "text-muted": "#9E8F78", "ink": "#0F131B",
+          "border-white": "rgba(255, 255, 255, 0.10)"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        spacing: {
+          "stack-sm": "8px", "stack-md": "16px", "stack-lg": "32px", "stack-xl": "64px",
+          "gutter": "24px", "margin-mobile": "20px", "margin-desktop": "64px", "container-max": "1200px"
+        },
+        fontFamily: { "headline": ["Inter"], "body": ["Inter"], "label": ["Inter"] }
+      } }
+    }
+  </script>
   <style>
-    :root {
-      --bg: #0F131B;
-      --surface: #1C2028;
-      --surface-2: #232834;
-      --border: rgba(255, 255, 255, 0.10);
-      --text: #DFE2EE;
-      --muted: #9E8F78;
-      --accent: #FFBA20;
-      --accent-soft: #FFDCA1;
-      --ink: #0F131B;
-      --warn-bg: rgba(255, 186, 32, 0.08);
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-            "Helvetica Neue", Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    header {
-      border-bottom: 1px solid var(--border);
-      padding: 20px 24px;
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
-      position: sticky; top: 0; background: rgba(15,19,27,0.85); backdrop-filter: blur(8px); z-index: 10;
-    }
-    header h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: 0.02em; color: var(--accent-soft); }
-    .lang-switcher { display: flex; gap: 8px; }
-    .lang-switcher button {
-      font: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
-      background: transparent; color: var(--text); border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 12px; cursor: pointer;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .lang-switcher button:hover { border-color: var(--accent); }
-    .lang-switcher button[aria-pressed="true"] { background: var(--accent); color: var(--ink); border-color: var(--accent); }
-    .lang-switcher button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-    .hero { width: 100%; line-height: 0; border-bottom: 1px solid var(--border); }
-    .hero svg { display: block; width: 100%; height: clamp(200px, 32vw, 340px); }
-
-    main { max-width: 760px; margin: 0 auto; padding: 36px 24px 64px; }
-    h2 { font-size: 28px; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.01em; }
-    .meta { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
-    h3 { font-size: 19px; font-weight: 600; color: var(--accent-soft); margin: 34px 0 12px; }
-    p { margin: 0 0 16px; }
-    a { color: var(--accent-soft); }
-
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; padding: 0; list-style: none; }
-    .chips li { font-size: 13px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; }
-
-    ul.features { list-style: none; padding: 0; margin: 0 0 16px; }
-    ul.features li { position: relative; padding: 6px 0 6px 26px; }
-    ul.features li::before { content: ""; position: absolute; left: 4px; top: 14px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-
-    /* Conversion card */
-    .card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
-      padding: 28px 26px; margin: 28px 0;
-    }
-    .card.primary { border-color: rgba(255,186,32,0.4); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
-    .card h3 { margin-top: 0; }
-    .badge { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-      color: var(--ink); background: var(--accent); border-radius: 6px; padding: 4px 9px; margin-bottom: 14px; }
-
-    form .field { margin: 0 0 14px; }
-    form label { display: block; font-size: 13px; color: var(--muted); margin: 0 0 6px; }
-    form input[type="text"], form input[type="email"] {
-      width: 100%; font: inherit; color: var(--text); background: var(--surface-2);
-      border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px;
-    }
-    form input:focus { outline: none; border-color: var(--accent); }
-    .hp { position: absolute; left: -9999px; }
-    button.cta {
-      display: inline-flex; align-items: center; gap: 10px; justify-content: center;
-      background: var(--accent); color: var(--ink); font-weight: 700; font-size: 16px;
-      border: none; cursor: pointer; padding: 15px 28px; border-radius: 14px; width: 100%;
-      box-shadow: 0 6px 20px rgba(255,186,32,0.22); transition: transform 0.12s, box-shadow 0.12s;
-    }
-    button.cta:hover { transform: translateY(-1px); box-shadow: 0 8px 26px rgba(255,186,32,0.32); }
-    .form-note { font-size: 12.5px; color: var(--muted); margin: 12px 0 0; }
-    #form-result { display: none; margin: 16px 0 0; padding: 14px 16px; border-radius: 12px; font-size: 14.5px;
-      background: var(--surface-2); border: 1px solid var(--border); }
-    #form-result.show { display: block; }
-    #form-result.ok { border-color: rgba(255,186,32,0.45); color: var(--accent-soft); }
-
-    /* Secondary APK */
-    details.apk { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 4px 20px; margin: 16px 0 28px; }
-    details.apk summary { cursor: pointer; padding: 16px 0; font-weight: 600; color: var(--text); list-style: none; }
-    details.apk summary::-webkit-details-marker { display: none; }
-    details.apk summary::before { content: "⌄ "; color: var(--muted); }
-    details.apk[open] summary::before { content: "⌃ "; }
-    .download {
-      display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--accent-soft);
-      font-weight: 700; text-decoration: none; padding: 13px 22px; border-radius: 12px; border: 1px solid var(--accent);
-    }
-    .download[aria-disabled="true"] { opacity: 0.5; pointer-events: none; }
-    .dl-meta { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
-    ol.steps { margin: 8px 0; padding-left: 22px; } ol.steps li { padding: 4px 0; }
-
-    /* Screenshots gallery */
-    .shots { display: flex; gap: 14px; overflow-x: auto; padding: 6px 0 14px; scroll-snap-type: x mandatory; }
-    .shots img { height: 380px; width: auto; border-radius: 18px; border: 1px solid var(--border); scroll-snap-align: start; }
-    .shots:empty { display: none; }
-
-    /* QR */
-    .qr-row { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
-    .qr { width: 96px; height: 96px; border-radius: 10px; background: #fff; padding: 6px; flex: 0 0 auto; }
-    .qr img { width: 100%; height: 100%; display: block; }
-    .qr-row span { font-size: 13px; color: var(--muted); }
-
-    .warn { background: var(--warn-bg); border: 1px solid rgba(255,186,32,0.35); border-radius: 14px; padding: 18px 20px; margin: 28px 0; }
-    .warn strong { color: var(--accent-soft); }
-
-    .faq dt { font-weight: 600; color: var(--accent-soft); margin-top: 18px; }
-    .faq dd { margin: 6px 0 0; padding: 0; }
-
-    footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; color: var(--muted); font-size: 13px; }
-    footer a { color: var(--accent-soft); }
-
-    [data-lang] { display: none; }
-    [data-lang].active { display: block; }
+    body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .glass-header { backdrop-filter: blur(20px); background-color: rgba(15, 19, 27, 0.85); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .sea-gradient { background: linear-gradient(to bottom, transparent 0%, rgba(15, 19, 27, 0.8) 100%); }
+    .lang-node { display: none; }
+    .lang-node.lang-active { display: revert; }
   </style>
 </head>
-<body>
-  <header>
-    <h1>🌒 Canary Eclipse</h1>
-    <nav class="lang-switcher" aria-label="Language">
-      <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
-      <button type="button" data-set-lang="es" aria-pressed="false">ES</button>
-      <button type="button" data-set-lang="pl" aria-pressed="false">PL</button>
+<body class="bg-background text-on-surface">
+
+  <!-- 1. Sticky Header -->
+  <header class="fixed top-0 w-full z-50 glass-header border-b border-border-white">
+    <nav class="flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+      <div class="flex items-center gap-2 font-bold text-xl text-primary-fixed-dim">
+        <span>🌒</span><span>Canary Eclipse</span>
+      </div>
+      <div class="flex items-center gap-stack-md">
+        <div class="flex gap-4 items-center">
+          <button class="lang-btn text-sm font-medium hover:text-primary transition-colors" data-lang="EN" aria-pressed="true" onclick="setLang('EN')">EN</button>
+          <button class="lang-btn text-sm font-medium hover:text-primary transition-colors" data-lang="ES" aria-pressed="false" onclick="setLang('ES')">ES</button>
+          <button class="lang-btn text-sm font-medium hover:text-primary transition-colors" data-lang="PL" aria-pressed="false" onclick="setLang('PL')">PL</button>
+        </div>
+        <span class="material-symbols-outlined text-primary-fixed-dim" aria-hidden="true">language</span>
+      </div>
     </nav>
   </header>
 
-  <section class="hero" aria-hidden="true">
-    <svg viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Partial solar eclipse setting over the sea">
-      <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#0B0E15"/><stop offset="0.5" stop-color="#141A28"/>
-          <stop offset="0.78" stop-color="#3A2A23"/><stop offset="1" stop-color="#5A3A22"/>
-        </linearGradient>
-        <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stop-color="#FFF6DD"/><stop offset="0.45" stop-color="#FFDCA1"/>
-          <stop offset="0.8" stop-color="#FFBA20"/><stop offset="1" stop-color="#FF8A1F"/>
-        </radialGradient>
-        <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stop-color="#FFBA20" stop-opacity="0.5"/><stop offset="1" stop-color="#FFBA20" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#2A1E1A"/><stop offset="1" stop-color="#0B0E15"/>
-        </linearGradient>
-        <linearGradient id="reflect" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#FFBA20" stop-opacity="0.45"/><stop offset="1" stop-color="#FFBA20" stop-opacity="0"/>
-        </linearGradient>
-        <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
-      </defs>
-      <rect x="0" y="0" width="800" height="360" fill="url(#sky)"/>
-      <g fill="#DFE2EE">
-        <circle cx="90" cy="48" r="1.1" opacity="0.7"/><circle cx="158" cy="92" r="0.8" opacity="0.5"/>
-        <circle cx="300" cy="40" r="0.7" opacity="0.6"/><circle cx="520" cy="36" r="1" opacity="0.7"/>
-        <circle cx="648" cy="58" r="1.2" opacity="0.6"/><circle cx="722" cy="118" r="0.9" opacity="0.5"/>
-        <circle cx="40" cy="138" r="0.8" opacity="0.5"/><circle cx="610" cy="150" r="0.7" opacity="0.45"/>
-      </g>
-      <circle cx="400" cy="205" r="195" fill="url(#halo)" filter="url(#soft)"/>
-      <circle cx="400" cy="205" r="96" fill="url(#sun)"/>
-      <circle cx="432" cy="232" r="96" fill="#0B0E15"/>
-      <circle cx="432" cy="232" r="96" fill="none" stroke="#FFDCA1" stroke-opacity="0.3" stroke-width="1.5"/>
-      <rect x="0" y="300" width="800" height="60" fill="url(#sea)"/>
-      <rect x="0" y="300" width="800" height="1.5" fill="#FFBA20" opacity="0.22"/>
-      <rect x="372" y="301" width="56" height="59" fill="url(#reflect)"/>
-    </svg>
-  </section>
-
-  <main>
-    <!-- ===== Intro (localized headings/lead) ===== -->
-    <div data-lang="en" class="active">
-      <h2>See the 12 August 2026 eclipse from the Canaries</h2>
-      <p class="meta">Free Android app · Partial solar eclipse · 12 Aug 2026, ~19:53 WEST · Canary Islands</p>
-    </div>
-    <div data-lang="es">
-      <h2>Observa el eclipse del 12 de agosto de 2026 desde Canarias</h2>
-      <p class="meta">App Android gratuita · Eclipse parcial · 12 ago 2026, ~19:53 WEST · Islas Canarias</p>
-    </div>
-    <div data-lang="pl">
-      <h2>Zobacz zaćmienie 12 sierpnia 2026 z Wysp Kanaryjskich</h2>
-      <p class="meta">Darmowa apka na Androida · Częściowe zaćmienie · 12.08.2026, ~19:53 WEST · Wyspy Kanaryjskie</p>
-    </div>
-
-    <ul class="chips">
-      <li>✓ No ads</li><li>✓ No tracking</li><li>✓ Free</li><li>✓ <a href="https://privacy.canaryeclipse.com">Privacy policy</a></li>
-    </ul>
-
-    <!-- ===== Screenshots ===== -->
-    <div data-lang="en" class="active"><h3>Screenshots</h3></div>
-    <div data-lang="es"><h3>Capturas de pantalla</h3></div>
-    <div data-lang="pl"><h3>Zrzuty ekranu</h3></div>
-    <div class="shots" id="shots">
-      <img src="screens/01-home.png" alt="Home — eclipse view, countdown and times" loading="lazy">
-      <img src="screens/02-map.png" alt="Map of viewpoints across the Canary Islands" loading="lazy">
-      <img src="screens/03-detail-phases.png" alt="Location detail — eclipse phases" loading="lazy">
-      <img src="screens/04-detail-horizon.png" alt="Location detail — visibility and horizon" loading="lazy">
-      <img src="screens/05-ar.png" alt="AR sun-finder with ISO solar filter warning" loading="lazy">
-    </div>
-
-    <!-- ===== PRIMARY: tester signup ===== -->
-    <div class="card primary">
-      <span class="badge" id="b-badge">Recommended</span>
-      <div data-lang="en" class="active">
-        <h3>Install safely via Google Play</h3>
-        <p>Join the tester list and get Canary Eclipse straight from <strong>Google Play</strong> — no security warnings, automatic updates. Enter the Google (Gmail) address on your phone; I'll add you to the test and email you the install link.</p>
+  <main class="pt-16">
+    <!-- 2. Hero -->
+    <section class="relative h-[500px] flex items-center justify-center overflow-hidden bg-surface-container-lowest">
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <svg class="w-full h-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="#0a0e16" height="1000" width="1000"></rect>
+          <circle cx="500" cy="500" fill="url(#sunGlow)" r="250">
+            <animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="0.4;0.6;0.4"></animate>
+          </circle>
+          <defs><radialGradient id="sunGlow"><stop offset="0%" stop-color="#ffba20" stop-opacity="0.6"></stop><stop offset="100%" stop-color="#ffba20" stop-opacity="0"></stop></radialGradient></defs>
+          <circle cx="500" cy="500" fill="#ffba20" r="120"></circle>
+          <circle cx="536" cy="466" fill="#0a0e16" r="116"></circle>
+          <circle cx="536" cy="466" fill="none" stroke="#ffdea7" stroke-opacity="0.3" stroke-width="2" r="116"></circle>
+          <rect fill="#0f131b" height="220" width="1000" y="850"></rect>
+        </svg>
+        <div class="absolute inset-0 sea-gradient"></div>
       </div>
-      <div data-lang="es">
-        <h3>Instálala de forma segura por Google Play</h3>
-        <p>Únete a la lista de testers y consigue Canary Eclipse directamente desde <strong>Google Play</strong> — sin avisos de seguridad y con actualizaciones automáticas. Indica la dirección de Google (Gmail) de tu móvil; te añadiré a la prueba y te enviaré el enlace de instalación.</p>
+      <div class="relative z-10 text-center px-margin-mobile">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-stack-md tracking-tight">
+          <span class="lang-node lang-active" data-key="hero_title_en">See the solar eclipse from the Canary Islands</span>
+          <span class="lang-node" data-key="hero_title_es">Observa el eclipse de Sol desde las Islas Canarias</span>
+          <span class="lang-node" data-key="hero_title_pl">Zobacz zaćmienie Słońca na Wyspach Kanaryjskich</span>
+        </h1>
+        <p class="text-lg md:text-xl text-on-surface-variant mx-auto md:whitespace-nowrap">
+          <span class="lang-node lang-active" data-key="hero_sub_en">Your assistant for observing the partial solar eclipse on 12 August 2026</span>
+          <span class="lang-node" data-key="hero_sub_es">Tu asistente para observar el eclipse parcial de Sol del 12 de agosto de 2026</span>
+          <span class="lang-node" data-key="hero_sub_pl">Twój asystent w obserwacji częściowego zaćmienia Słońca 12 sierpnia 2026</span>
+        </p>
       </div>
-      <div data-lang="pl">
-        <h3>Zainstaluj bezpiecznie przez Google Play</h3>
-        <p>Zapisz się na listę testerów i pobierz Canary Eclipse wprost z <strong>Google Play</strong> — bez ostrzeżeń bezpieczeństwa, z automatycznymi aktualizacjami. Podaj adres Google (Gmail) z telefonu; dodam Cię do testu i wyślę link instalacyjny mailem.</p>
-      </div>
+    </section>
 
-      <form id="tester-form" novalidate>
-        <input type="hidden" name="access_key" value="9107a480-4f67-417f-839e-0e208d029d58">
-        <input type="hidden" name="subject" value="New Canary Eclipse tester signup">
-        <input type="hidden" name="from_name" value="Canary Eclipse landing">
-        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
-        <div class="field">
-          <label id="l-name" for="f-name">Your name (optional)</label>
-          <input type="text" id="f-name" name="name" autocomplete="name">
+    <!-- 3. Intro & Trust Chips -->
+    <section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+      <div class="flex-1">
+        <p class="text-primary-fixed-dim font-bold text-sm uppercase tracking-widest mb-stack-sm">
+          <span class="lang-node lang-active" data-key="meta_line_en">Free Android app · 12 Aug 2026, ~19:53 WEST · Canary Islands</span>
+          <span class="lang-node" data-key="meta_line_es">App Android gratuita · 12 ago 2026, ~19:53 WEST · Islas Canarias</span>
+          <span class="lang-node" data-key="meta_line_pl">Darmowa aplikacja Android · 12.08.2026, ~19:53 WEST · Wyspy Kanaryjskie</span>
+        </p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-stack-md">
+          <span class="lang-node lang-active" data-key="intro_heading_en">Find the best viewing spot</span>
+          <span class="lang-node" data-key="intro_heading_es">Encuentra el mejor lugar de observación</span>
+          <span class="lang-node" data-key="intro_heading_pl">Znajdź najlepsze miejsce obserwacji</span>
+        </h2>
+        <p class="text-on-surface-variant text-lg max-w-2xl">
+          <span class="lang-node lang-active" data-key="intro_text_en">On 12 August 2026 the Sun sets partly eclipsed over the Canary Islands — up to 78% covered, low on the horizon. This app helps you work out the best time and direction to observe from wherever you are.</span>
+          <span class="lang-node" data-key="intro_text_es">El 12 de agosto de 2026 el Sol se pone parcialmente eclipsado sobre las Islas Canarias — hasta un 78% cubierto, bajo en el horizonte. Esta app te ayuda a determinar el mejor momento y dirección de observación desde el lugar en el que estés.</span>
+          <span class="lang-node" data-key="intro_text_pl">12 sierpnia 2026 Słońce zachodzi częściowo zaćmione nad Wyspami Kanaryjskimi — zakryte do 78%, nisko nad horyzontem. Ta aplikacja pomoże ustalić najlepszy czas i kierunek obserwacji w miejscu, w którym aktualnie jesteś.</span>
+        </p>
+        <div class="flex flex-wrap gap-4 mt-stack-lg">
+          <span class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full border border-border-white text-sm font-medium"><span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">verified_user</span><span class="lang-node lang-active" data-key="chip_ads_en">No ads</span><span class="lang-node" data-key="chip_ads_es">Sin anuncios</span><span class="lang-node" data-key="chip_ads_pl">Bez reklam</span></span>
+          <span class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full border border-border-white text-sm font-medium"><span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">visibility_off</span><span class="lang-node lang-active" data-key="chip_track_en">No tracking</span><span class="lang-node" data-key="chip_track_es">Sin rastreo</span><span class="lang-node" data-key="chip_track_pl">Bez śledzenia</span></span>
+          <span class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full border border-border-white text-sm font-medium"><span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">money_off</span><span class="lang-node lang-active" data-key="chip_free_en">Free</span><span class="lang-node" data-key="chip_free_es">Gratis</span><span class="lang-node" data-key="chip_free_pl">Za darmo</span></span>
+          <a href="https://privacy.canaryeclipse.com" class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full border border-border-white text-sm font-medium hover:border-primary transition-colors"><span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">policy</span><span class="lang-node lang-active" data-key="chip_priv_en">Privacy policy</span><span class="lang-node" data-key="chip_priv_es">Privacidad</span><span class="lang-node" data-key="chip_priv_pl">Prywatność</span></a>
         </div>
-        <div class="field">
-          <label id="l-email" for="f-email">Google / Gmail address</label>
-          <input type="email" id="f-email" name="email" required autocomplete="email" inputmode="email">
+      </div>
+    </section>
+
+    <!-- 4. Screenshot Gallery -->
+    <section class="bg-surface-container-low py-stack-xl">
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <h3 class="text-2xl font-bold mb-stack-lg">
+          <span class="lang-node lang-active" data-key="gallery_title_en">See the app in action</span>
+          <span class="lang-node" data-key="gallery_title_es">Mira la app en acción</span>
+          <span class="lang-node" data-key="gallery_title_pl">Zobacz aplikację w akcji</span>
+        </h3>
+        <div id="gallery" class="flex overflow-x-auto gap-stack-md no-scrollbar snap-x snap-mandatory -mx-3 px-3 py-3">
+          <img alt="Home — eclipse view, countdown and times" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/01-home.png">
+          <img alt="Map of viewpoints across the Canary Islands" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/02-map.png">
+          <img alt="Location detail — eclipse phases" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/03-detail-phases.png">
+          <img alt="Location detail — visibility and horizon" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/04-detail-horizon.png">
+          <img alt="AR sun-finder with ISO solar filter warning" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/05-ar.png">
         </div>
-        <button type="submit" class="cta" id="f-submit">Join the test</button>
-        <p class="form-note" id="f-note">Your email is used only to add you to the closed test. See the <a href="https://privacy.canaryeclipse.com">privacy policy</a>.</p>
-      </form>
-      <div id="form-result" role="status" aria-live="polite"></div>
-    </div>
-
-    <!-- ===== SECONDARY: direct APK ===== -->
-    <details class="apk">
-      <summary id="apk-summary">Prefer to install now? Download the APK directly (advanced)</summary>
-      <div data-lang="en" class="active">
-        <p>For Android users comfortable with sideloading. Android will show a warning because the file isn't from the Play Store — that's normal for any direct APK, not specific to this app.</p>
       </div>
-      <div data-lang="es">
-        <p>Para usuarios de Android acostumbrados a instalar APK manualmente. Android mostrará un aviso porque el archivo no procede de Play Store — es normal en cualquier APK directo, no es específico de esta app.</p>
-      </div>
-      <div data-lang="pl">
-        <p>Dla użytkowników Androida obeznanych z instalacją ręczną. Android pokaże ostrzeżenie, bo plik nie pochodzi z Play Store — to normalne dla każdego APK, nie jest specyficzne dla tej apki.</p>
-      </div>
-      <p>
-        <a class="download" data-apk href="#" aria-disabled="true">⬇ Download APK</a>
-        <span class="dl-meta">Android 7.0+ · ~152 MB</span>
-      </p>
-      <ol class="steps">
-        <li data-lang="en" class="active">Open the downloaded <code>.apk</code>, allow “Install unknown apps” for your browser if asked, then confirm Install.</li>
-        <li data-lang="es">Abre el <code>.apk</code> descargado, permite «Instalar apps desconocidas» para tu navegador si lo pide, y confirma Instalar.</li>
-        <li data-lang="pl">Otwórz pobrany <code>.apk</code>, zezwól na „Instalowanie z nieznanych źródeł" dla przeglądarki jeśli zapyta, i potwierdź Instaluj.</li>
-      </ol>
-      <div class="qr-row">
-        <div class="qr"><img src="qr.png" alt="QR to canaryeclipse.com"></div>
-        <span data-lang="en" class="active">Scan to open this page on your phone.</span>
-        <span data-lang="es">Escanea para abrir esta página en tu móvil.</span>
-        <span data-lang="pl">Zeskanuj, aby otworzyć tę stronę na telefonie.</span>
-      </div>
-    </details>
+    </section>
 
-    <!-- ===== Features ===== -->
-    <div data-lang="en" class="active">
-      <h3>What it does</h3>
-      <ul class="features">
-        <li>Exact eclipse times (first contact, maximum, sunset) for any point on the islands</li>
-        <li>Sun altitude &amp; azimuth at maximum — so you know where to aim</li>
-        <li>AR sun-finder: point your phone and line up where the Sun will be</li>
-        <li>Per-viewpoint visibility score (terrain horizon, Sun altitude, azimuth)</li>
-        <li>Works for curated viewpoints, Google Places search, or your live GPS</li>
-      </ul>
-    </div>
-    <div data-lang="es">
-      <h3>Qué hace</h3>
-      <ul class="features">
-        <li>Horas exactas del eclipse (primer contacto, máximo, puesta de Sol) para cualquier punto de las islas</li>
-        <li>Altitud y azimut del Sol en el máximo — para saber hacia dónde apuntar</li>
-        <li>Buscador del Sol en realidad aumentada: apunta el móvil y alinéate con el Sol</li>
-        <li>Puntuación de visibilidad por punto (horizonte/terreno, altitud del Sol, azimut)</li>
-        <li>Funciona con puntos seleccionados, búsqueda de Google Places o tu GPS en directo</li>
-      </ul>
-    </div>
-    <div data-lang="pl">
-      <h3>Co potrafi</h3>
-      <ul class="features">
-        <li>Dokładne czasy zaćmienia (pierwszy kontakt, maksimum, zachód Słońca) dla dowolnego punktu wysp</li>
-        <li>Wysokość i azymut Słońca w maksimum — wiesz, gdzie celować</li>
-        <li>Wyszukiwarka Słońca w AR: skieruj telefon i ustaw się tam, gdzie będzie Słońce</li>
-        <li>Ocena widoczności dla punktu (horyzont/teren, wysokość Słońca, azymut)</li>
-        <li>Działa dla gotowych punktów, wyszukiwarki Google Places albo Twojego GPS na żywo</li>
-      </ul>
-    </div>
+    <!-- 5 & 7. Primary Card + Features -->
+    <section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-xl grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+      <!-- Primary: tester sign-up -->
+      <div class="lg:col-span-8 bg-surface-container-high rounded-3xl p-6 md:p-8 border border-primary-fixed-dim/40 flex flex-col justify-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+          <h3 class="text-2xl font-bold text-primary-fixed-dim">
+            <span class="lang-node lang-active" data-key="card_title_en">Install safely via Google Play</span>
+            <span class="lang-node" data-key="card_title_es">Instálala de forma segura por Google Play</span>
+            <span class="lang-node" data-key="card_title_pl">Zainstaluj bezpiecznie przez Google Play</span>
+          </h3>
+          <div class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+            <span class="lang-node lang-active" data-key="badge_en">Recommended</span><span class="lang-node" data-key="badge_es">Recomendado</span><span class="lang-node" data-key="badge_pl">Zalecane</span>
+          </div>
+        </div>
+        <p class="text-on-surface-variant mb-6 max-w-lg text-sm leading-relaxed">
+          <span class="lang-node lang-active" data-key="card_body_en">Join the tester list and get Canary Eclipse straight from Google Play — no security warnings, automatic updates. Enter the Google (Gmail) address on your phone; I'll add you to the test and email you the install link.</span>
+          <span class="lang-node" data-key="card_body_es">Únete a la lista de testers y consigue Canary Eclipse directamente desde Google Play — sin avisos de seguridad y con actualizaciones automáticas. Indica la dirección de Google (Gmail) de tu móvil; te añadiré a la prueba y te enviaré el enlace.</span>
+          <span class="lang-node" data-key="card_body_pl">Zapisz się na listę testerów i pobierz Canary Eclipse wprost z Google Play — bez ostrzeżeń, z automatycznymi aktualizacjami. Podaj adres Google (Gmail) z telefonu; dodam Cię do testu i wyślę link instalacyjny emailem.</span>
+        </p>
+        <form id="tester-form" class="w-full space-y-4" novalidate>
+          <input type="hidden" name="access_key" value="9107a480-4f67-417f-839e-0e208d029d58">
+          <input type="hidden" name="subject" value="New Canary Eclipse tester signup">
+          <input type="hidden" name="from_name" value="Canary Eclipse landing">
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input id="f-name" class="bg-surface-container border border-border-white rounded-xl text-on-surface placeholder-outline focus:ring-primary focus:border-primary px-4 py-3 text-sm" name="name" autocomplete="name" type="text" placeholder="Your name (optional)">
+            <input id="f-email" class="bg-surface-container border border-border-white rounded-xl text-on-surface placeholder-outline focus:ring-primary focus:border-primary px-4 py-3 text-sm" name="email" autocomplete="email" inputmode="email" required type="email" placeholder="Google / Gmail address">
+          </div>
+          <button type="submit" class="w-full bg-primary-container text-on-primary-container font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">verified</span>
+            <span class="lang-node lang-active text-sm" data-key="btn_en">Join the test</span><span class="lang-node text-sm" data-key="btn_es">Unirme a la prueba</span><span class="lang-node text-sm" data-key="btn_pl">Zapisz się na test</span>
+          </button>
+          <p class="text-[12px] text-text-muted">
+            <span class="lang-node lang-active" data-key="note_en">Your email is used only to add you to the closed test. See the <a class="underline" href="https://privacy.canaryeclipse.com">privacy policy</a>.</span>
+            <span class="lang-node" data-key="note_es">Tu correo solo se usa para añadirte a la prueba cerrada. Consulta la <a class="underline" href="https://privacy.canaryeclipse.com">política de privacidad</a>.</span>
+            <span class="lang-node" data-key="note_pl">Adres email służy wyłącznie do dodania Cię do testu zamkniętego. Zobacz <a class="underline" href="https://privacy.canaryeclipse.com">politykę prywatności</a>.</span>
+          </p>
+        </form>
+        <div id="form-result" role="status" aria-live="polite" class="hidden mt-4 text-sm rounded-xl p-4 bg-surface-container border border-border-white"></div>
+      </div>
 
-    <!-- ===== FAQ ===== -->
-    <div data-lang="en" class="active">
-      <h3>FAQ</h3>
-      <dl class="faq">
-        <dt>Is it safe? Why does Android warn me?</dt>
-        <dd>The app is signed by the developer. Android warns about any app installed outside the Play Store — it's not specific to this one. If you'd rather avoid the warning, use the Google Play tester option above.</dd>
-        <dt>What data does it collect?</dt>
-        <dd>Nothing that identifies you. Your location is processed on your device. Full <a href="https://privacy.canaryeclipse.com">privacy policy</a>.</dd>
-        <dt>Is it really free?</dt>
-        <dd>Yes — free, no ads, no account.</dd>
-      </dl>
-    </div>
-    <div data-lang="es">
-      <h3>Preguntas frecuentes</h3>
-      <dl class="faq">
-        <dt>¿Es segura? ¿Por qué me avisa Android?</dt>
-        <dd>La app está firmada por el desarrollador. Android avisa de cualquier app instalada fuera de Play Store — no es específico de esta. Si prefieres evitar el aviso, usa la opción de tester de Google Play de arriba.</dd>
-        <dt>¿Qué datos recopila?</dt>
-        <dd>Nada que te identifique. Tu ubicación se procesa en tu dispositivo. <a href="https://privacy.canaryeclipse.com">Política de privacidad</a>.</dd>
-        <dt>¿Es realmente gratis?</dt>
-        <dd>Sí — gratis, sin anuncios, sin cuenta.</dd>
-      </dl>
-    </div>
-    <div data-lang="pl">
-      <h3>FAQ</h3>
-      <dl class="faq">
-        <dt>Czy to bezpieczne? Czemu Android ostrzega?</dt>
-        <dd>Apka jest podpisana przez dewelopera. Android ostrzega przy każdej apce instalowanej spoza Play Store — to nie jest specyficzne dla tej. Jeśli wolisz uniknąć ostrzeżenia, użyj opcji testera Google Play powyżej.</dd>
-        <dt>Jakie dane zbiera?</dt>
-        <dd>Żadnych identyfikujących. Lokalizacja przetwarzana jest na Twoim urządzeniu. <a href="https://privacy.canaryeclipse.com">Polityka prywatności</a>.</dd>
-        <dt>Czy naprawdę za darmo?</dt>
-        <dd>Tak — za darmo, bez reklam, bez konta.</dd>
-      </dl>
-    </div>
+      <!-- Features -->
+      <div class="lg:col-span-4 bg-surface-container rounded-3xl p-8 border border-border-white">
+        <h4 class="text-sm font-bold uppercase tracking-widest text-primary mb-stack-md">
+          <span class="lang-node lang-active" data-key="feat_h_en">Key features</span><span class="lang-node" data-key="feat_h_es">Funciones clave</span><span class="lang-node" data-key="feat_h_pl">Kluczowe funkcje</span>
+        </h4>
+        <ul class="space-y-6">
+          <li class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary-fixed-dim" aria-hidden="true">schedule</span>
+            <div>
+              <p class="font-bold"><span class="lang-node lang-active" data-key="f1t_en">Precise timing</span><span class="lang-node" data-key="f1t_es">Tiempos precisos</span><span class="lang-node" data-key="f1t_pl">Dokładne czasy</span></p>
+              <p class="text-sm text-on-surface-variant"><span class="lang-node lang-active" data-key="f1d_en">First contact, maximum and sunset, for any point on the islands.</span><span class="lang-node" data-key="f1d_es">Primer contacto, máximo y puesta de Sol, para cualquier punto.</span><span class="lang-node" data-key="f1d_pl">Pierwszy kontakt, maksimum i zachód Słońca, dla każdego punktu.</span></p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary-fixed-dim" aria-hidden="true">explore</span>
+            <div>
+              <p class="font-bold"><span class="lang-node lang-active" data-key="f2t_en">Sun position</span><span class="lang-node" data-key="f2t_es">Posición del Sol</span><span class="lang-node" data-key="f2t_pl">Pozycja Słońca</span></p>
+              <p class="text-sm text-on-surface-variant"><span class="lang-node lang-active" data-key="f2d_en">Altitude &amp; azimuth at maximum — know where to aim.</span><span class="lang-node" data-key="f2d_es">Altitud y azimut en el máximo — sabe hacia dónde apuntar.</span><span class="lang-node" data-key="f2d_pl">Wysokość i azymut w maksimum — wiesz, gdzie celować.</span></p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary-fixed-dim" aria-hidden="true">view_in_ar</span>
+            <div>
+              <p class="font-bold"><span class="lang-node lang-active" data-key="f3t_en">AR sun-finder</span><span class="lang-node" data-key="f3t_es">Buscador AR</span><span class="lang-node" data-key="f3t_pl">Wyszukiwarka AR</span></p>
+              <p class="text-sm text-on-surface-variant"><span class="lang-node lang-active" data-key="f3d_en">Point your phone to line up where the Sun will be.</span><span class="lang-node" data-key="f3d_es">Apunta el móvil para alinearte con el Sol.</span><span class="lang-node" data-key="f3d_pl">Skieruj telefon i ustaw się tam, gdzie będzie Słońce.</span></p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary-fixed-dim" aria-hidden="true">terrain</span>
+            <div>
+              <p class="font-bold"><span class="lang-node lang-active" data-key="f4t_en">Visibility score</span><span class="lang-node" data-key="f4t_es">Puntuación de visibilidad</span><span class="lang-node" data-key="f4t_pl">Ocena widoczności</span></p>
+              <p class="text-sm text-on-surface-variant"><span class="lang-node lang-active" data-key="f4d_en">Per-viewpoint score from terrain horizon, Sun altitude and azimuth.</span><span class="lang-node" data-key="f4d_es">Por punto: horizonte/terreno, altitud del Sol y azimut.</span><span class="lang-node" data-key="f4d_pl">Dla punktu: horyzont/teren, wysokość Słońca i azymut.</span></p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-    <div class="warn">
-      <p data-lang="en" class="active" style="margin:0"><strong>⚠ Eye safety.</strong> Never look at the Sun — even partly eclipsed — without certified <strong>ISO 12312-2</strong> solar eclipse glasses or filters. This app does not replace eye protection. Standard sunglasses are <em>not</em> safe.</p>
-      <p data-lang="es" style="margin:0"><strong>⚠ Seguridad ocular.</strong> Nunca mires al Sol —ni siquiera parcialmente eclipsado— sin gafas o filtros solares certificados <strong>ISO 12312-2</strong>. Esta app no sustituye la protección ocular. Las gafas de sol normales <em>no</em> son seguras.</p>
-      <p data-lang="pl" style="margin:0"><strong>⚠ Bezpieczeństwo wzroku.</strong> Nigdy nie patrz na Słońce — nawet częściowo zaćmione — bez certyfikowanych okularów lub filtrów <strong>ISO 12312-2</strong>. Ta apka nie zastępuje ochrony oczu. Zwykłe okulary przeciwsłoneczne <em>nie</em> są bezpieczne.</p>
-    </div>
+    <!-- 8. Eye-Safety -->
+    <section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-stack-xl">
+      <div class="bg-surface-container-highest border-2 border-primary-fixed-dim rounded-3xl p-8 flex flex-col md:flex-row items-center gap-stack-lg">
+        <div class="flex-none p-4 rounded-2xl bg-primary-container/20">
+          <span class="material-symbols-outlined text-[64px] text-primary-fixed-dim" aria-hidden="true">warning</span>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-2 text-primary-fixed-dim">
+            <span class="lang-node lang-active" data-key="safety_title_en">⚠ Eye safety first</span><span class="lang-node" data-key="safety_title_es">⚠ La seguridad ocular primero</span><span class="lang-node" data-key="safety_title_pl">⚠ Najpierw bezpieczeństwo wzroku</span>
+          </h3>
+          <p class="text-lg">
+            <span class="lang-node lang-active" data-key="safety_body_en">Never look at the Sun — even partly eclipsed — without certified ISO 12312-2 solar eclipse glasses or filters. This app does not replace eye protection. Standard sunglasses are NOT safe.</span>
+            <span class="lang-node" data-key="safety_body_es">Nunca mires al Sol —ni siquiera parcialmente eclipsado— sin gafas o filtros solares certificados ISO 12312-2. Esta app no sustituye la protección ocular. Las gafas de sol normales NO son seguras.</span>
+            <span class="lang-node" data-key="safety_body_pl">Nigdy nie patrz na Słońce — nawet częściowo zaćmione — bez certyfikowanych okularów lub filtrów ISO 12312-2. Ta aplikacja nie zastępuje ochrony oczu. Zwykłe okulary przeciwsłoneczne również NIE są bezpieczne.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Secondary: direct APK -->
+    <section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg border-t border-border-white">
+      <details class="group bg-surface-container rounded-2xl overflow-hidden">
+        <summary class="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-surface-container-high transition-colors font-bold text-lg">
+          <span>
+            <span class="lang-node lang-active" data-key="apk_title_en">Prefer to install now? Direct APK (advanced)</span>
+            <span class="lang-node" data-key="apk_title_es">¿Prefieres instalarla ya? APK directo (avanzado)</span>
+            <span class="lang-node" data-key="apk_title_pl">Wolisz zainstalować od razu? APK bezpośredni (zaawansowane)</span>
+          </span>
+          <span class="material-symbols-outlined transition-transform group-open:rotate-180" aria-hidden="true">expand_more</span>
+        </summary>
+        <div class="p-8 border-t border-border-white flex flex-col md:flex-row gap-gutter items-center">
+          <div class="p-3 bg-white rounded-xl flex-none"><img alt="QR code to canaryeclipse.com" class="w-32 h-32" src="qr.png"></div>
+          <div>
+            <p class="mb-stack-md text-on-surface-variant max-w-lg">
+              <span class="lang-node lang-active" data-key="apk_body_en">For Android users comfortable with sideloading. Android will warn you because the file isn't from the Play Store — that's normal for any direct APK, not specific to this app.</span>
+              <span class="lang-node" data-key="apk_body_es">Para usuarios de Android acostumbrados a instalar APK manualmente. Android te avisará porque el archivo no procede de Play Store — es normal en cualquier APK directo.</span>
+              <span class="lang-node" data-key="apk_body_pl">Dla użytkowników Androida obeznanych z instalacją ręczną. Android ostrzeże, bo plik nie pochodzi z Play Store — to normalne dla każdego APK.</span>
+            </p>
+            <a class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity" href="https://github.com/Bartek6666/canaryeclipse-site/releases/download/v1.0.0/canary-eclipse-v1.0.0.apk" download>
+              <span class="material-symbols-outlined" aria-hidden="true">get_app</span>Download APK v1.0.0
+            </a>
+            <p class="text-[12px] text-text-muted mt-2">Android 7.0+ · ~152 MB</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- 9. FAQ -->
+    <section class="max-w-3xl mx-auto px-margin-mobile py-stack-xl">
+      <h2 class="text-3xl font-bold mb-stack-lg text-center">
+        <span class="lang-node lang-active" data-key="faq_h_en">Frequently asked questions</span><span class="lang-node" data-key="faq_h_es">Preguntas frecuentes</span><span class="lang-node" data-key="faq_h_pl">Najczęstsze pytania</span>
+      </h2>
+      <div class="text-left space-y-gutter">
+        <div>
+          <h4 class="font-bold text-lg mb-2"><span class="lang-node lang-active" data-key="q1_en">Is it safe? Why does Android warn me?</span><span class="lang-node" data-key="q1_es">¿Es segura? ¿Por qué me avisa Android?</span><span class="lang-node" data-key="q1_pl">Czy to bezpieczne? Czemu Android ostrzega?</span></h4>
+          <p class="text-on-surface-variant"><span class="lang-node lang-active" data-key="a1_en">The app is signed by the developer. Android warns about any app installed outside the Play Store — it's not specific to this one. To avoid the warning, use the Google Play tester option above.</span><span class="lang-node" data-key="a1_es">La app está firmada por el desarrollador. Android avisa de cualquier app instalada fuera de Play Store — no es específico de esta. Para evitarlo, usa la opción de tester de Google Play de arriba.</span><span class="lang-node" data-key="a1_pl">Aplikacja jest podpisana przez dewelopera. Android ostrzega w taki sposób przy każdej aplikacji spoza Play Store. Aby uniknąć ostrzeżenia, użyj opcji testera Google Play powyżej.</span></p>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-2"><span class="lang-node lang-active" data-key="q2_en">What data does it collect?</span><span class="lang-node" data-key="q2_es">¿Qué datos recopila?</span><span class="lang-node" data-key="q2_pl">Jakie dane zbiera?</span></h4>
+          <p class="text-on-surface-variant"><span class="lang-node lang-active" data-key="a2_en">Nothing that identifies you. Your location is processed on your device. See the full privacy policy.</span><span class="lang-node" data-key="a2_es">Nada que te identifique. Tu ubicación se procesa en tu dispositivo. Consulta la política de privacidad.</span><span class="lang-node" data-key="a2_pl">Żadnych identyfikujących. Lokalizacja przetwarzana jest na Twoim urządzeniu. Zobacz politykę prywatności.</span></p>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-2"><span class="lang-node lang-active" data-key="q3_en">Is it really free?</span><span class="lang-node" data-key="q3_es">¿Es realmente gratis?</span><span class="lang-node" data-key="q3_pl">Czy naprawdę za darmo?</span></h4>
+          <p class="text-on-surface-variant"><span class="lang-node lang-active" data-key="a3_en">Yes — free, no ads, no account.</span><span class="lang-node" data-key="a3_es">Sí — gratis, sin anuncios, sin cuenta.</span><span class="lang-node" data-key="a3_pl">Tak — za darmo, bez reklam, bez konta.</span></p>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <p><a href="https://privacy.canaryeclipse.com">Privacy policy</a> · <a href="mailto:contact@canaryeclipse.com">contact@canaryeclipse.com</a></p>
+  <!-- Footer -->
+  <footer class="bg-surface-container-lowest py-stack-xl border-t border-border-white">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-lg">
+      <div class="text-center md:text-left">
+        <div class="font-bold text-xl text-primary-fixed-dim mb-2">🌒 Canary Eclipse</div>
+        <p class="text-sm text-on-surface-variant">© 2026 Canary Eclipse · Android · 12 August 2026, Canary Islands</p>
+      </div>
+      <div class="flex gap-6 text-sm font-medium">
+        <a class="hover:text-primary transition-colors" href="https://privacy.canaryeclipse.com">Privacy</a>
+        <a class="hover:text-primary transition-colors" href="mailto:contact@canaryeclipse.com">Contact</a>
+      </div>
+    </div>
   </footer>
 
+  <!-- Lightbox -->
+  <div id="lightbox" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Screenshot">
+    <button id="lightbox-close" aria-label="Close" class="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface hover:text-primary border border-border-white">
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-[95vw] w-auto rounded-2xl shadow-2xl">
+  </div>
+
   <script>
+    var W3 = {
+      en: { namePh: "Your name (optional)", emailPh: "Google / Gmail address",
+            sending: "Sending…", ok: "Thanks! I'll add your email to the Google Play test and send the install link — usually within a day.",
+            err: "Something went wrong. Please email contact@canaryeclipse.com instead." },
+      es: { namePh: "Tu nombre (opcional)", emailPh: "Dirección de Google / Gmail",
+            sending: "Enviando…", ok: "¡Gracias! Te añadiré a la prueba de Google Play y te enviaré el enlace — normalmente en un día.",
+            err: "Algo falló. Escríbeme a contact@canaryeclipse.com." },
+      pl: { namePh: "Twoje imię (opcjonalnie)", emailPh: "Adres Google / Gmail",
+            sending: "Wysyłanie…", ok: "Dzięki! Dodam Cię do testu Google Play i wyślę link instalacyjny — zwykle w ciągu doby.",
+            err: "Coś poszło nie tak. Napisz na contact@canaryeclipse.com." }
+    };
+    var current = "EN";
+
+    function setLang(L) {
+      current = L;
+      var suffix = "_" + L.toLowerCase();
+      document.querySelectorAll(".lang-node").forEach(function (n) {
+        n.classList.toggle("lang-active", n.getAttribute("data-key").slice(-3) === suffix);
+      });
+      document.querySelectorAll(".lang-btn").forEach(function (b) {
+        var on = b.getAttribute("data-lang") === L;
+        b.setAttribute("aria-pressed", String(on));
+        b.classList.toggle("text-primary", on);
+        b.classList.toggle("font-bold", on);
+        b.classList.toggle("underline", on);
+        b.classList.toggle("underline-offset-4", on);
+      });
+      var t = W3[L.toLowerCase()] || W3.en;
+      var ne = document.getElementById("f-name"); if (ne) ne.placeholder = t.namePh;
+      var ee = document.getElementById("f-email"); if (ee) ee.placeholder = t.emailPh;
+      document.documentElement.lang = L.toLowerCase();
+      try { localStorage.setItem("canary_lang", L); } catch (e) {}
+    }
+
+    var saved; try { saved = localStorage.getItem("canary_lang"); } catch (e) {}
+    var nav = (navigator.language || "en").slice(0, 2).toUpperCase();
+    setLang(saved || (["EN", "ES", "PL"].indexOf(nav) >= 0 ? nav : "EN"));
+
+    var form = document.getElementById("tester-form");
+    var result = document.getElementById("form-result");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var t = W3[current.toLowerCase()] || W3.en;
+      result.classList.remove("hidden"); result.textContent = t.sending;
+      fetch("https://api.web3forms.com/submit", { method: "POST", body: new FormData(form) })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j.success) { form.style.display = "none"; result.classList.add("text-primary", "border-primary-fixed-dim"); result.textContent = t.ok; }
+          else { result.textContent = t.err; }
+        })
+        .catch(function () { result.textContent = t.err; });
+    });
+
+    // Lightbox — click a screenshot to view it full-screen
     (function () {
-      var APK_URL = "https://github.com/Bartek6666/canaryeclipse-site/releases/download/v1.0.0/canary-eclipse-v1.0.0.apk";
-
-      var STR = {
-        en: { lName:"Your name (optional)", lEmail:"Google / Gmail address", submit:"Join the test",
-              badge:"Recommended", apk:"Prefer to install now? Download the APK directly (advanced)",
-              note:'Your email is used only to add you to the closed test. See the <a href="https://privacy.canaryeclipse.com">privacy policy</a>.',
-              sending:"Sending…", ok:"Thanks! I'll add your email to the Google Play test and send you the install link — usually within a day.",
-              err:"Something went wrong. Please email contact@canaryeclipse.com instead." },
-        es: { lName:"Tu nombre (opcional)", lEmail:"Dirección de Google / Gmail", submit:"Unirme a la prueba",
-              badge:"Recomendado", apk:"¿Prefieres instalarla ya? Descarga el APK directo (avanzado)",
-              note:'Tu correo solo se usa para añadirte a la prueba cerrada. Consulta la <a href="https://privacy.canaryeclipse.com">política de privacidad</a>.',
-              sending:"Enviando…", ok:"¡Gracias! Te añadiré a la prueba de Google Play y te enviaré el enlace de instalación — normalmente en un día.",
-              err:"Algo falló. Escríbeme a contact@canaryeclipse.com." },
-        pl: { lName:"Twoje imię (opcjonalnie)", lEmail:"Adres Google / Gmail", submit:"Zapisz się na test",
-              badge:"Zalecane", apk:"Wolisz zainstalować od razu? Pobierz APK bezpośrednio (zaawansowane)",
-              note:'Mail służy wyłącznie do dodania Cię do testu zamkniętego. Zobacz <a href="https://privacy.canaryeclipse.com">politykę prywatności</a>.',
-              sending:"Wysyłanie…", ok:"Dzięki! Dodam Cię do testu Google Play i wyślę link instalacyjny — zwykle w ciągu doby.",
-              err:"Coś poszło nie tak. Napisz na contact@canaryeclipse.com." }
-      };
-
-      var current = "en";
-      var buttons = document.querySelectorAll('[data-set-lang]');
-      var langEls = document.querySelectorAll('[data-lang]');
-
-      function setLang(lang) {
-        if (!STR[lang]) lang = "en";
-        current = lang;
-        langEls.forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-lang') === lang); });
-        buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang)); });
-        document.documentElement.lang = lang;
-        var t = STR[lang];
-        document.getElementById('l-name').textContent = t.lName;
-        document.getElementById('l-email').textContent = t.lEmail;
-        document.getElementById('f-submit').textContent = t.submit;
-        document.getElementById('b-badge').textContent = t.badge;
-        document.getElementById('apk-summary').textContent = t.apk;
-        document.getElementById('f-note').innerHTML = t.note;
-        try { localStorage.setItem('ce_lang', lang); } catch (e) {}
+      var lb = document.getElementById("lightbox");
+      var lbImg = document.getElementById("lightbox-img");
+      function openLb(src, alt) {
+        lbImg.src = src; lbImg.alt = alt || "";
+        lb.classList.remove("hidden"); lb.classList.add("flex");
+        document.body.style.overflow = "hidden";
       }
-      buttons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-set-lang')); }); });
-
-      var stored; try { stored = localStorage.getItem('ce_lang'); } catch (e) {}
-      var initial = stored || (navigator.language || 'en').slice(0, 2);
-      setLang(STR[initial] ? initial : 'en');
-
-      // Direct APK button
-      document.querySelectorAll('[data-apk]').forEach(function (el) {
-        el.setAttribute('href', APK_URL); el.setAttribute('aria-disabled', 'false'); el.setAttribute('download', '');
+      function closeLb() {
+        lb.classList.add("hidden"); lb.classList.remove("flex");
+        document.body.style.overflow = ""; lbImg.src = "";
+      }
+      document.querySelectorAll("#gallery img").forEach(function (img) {
+        img.addEventListener("click", function () { openLb(img.src, img.alt); });
       });
-
-      // Tester form (Web3Forms)
-      var form = document.getElementById('tester-form');
-      var result = document.getElementById('form-result');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var t = STR[current];
-        result.className = 'show'; result.textContent = t.sending;
-        fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) })
-          .then(function (r) { return r.json(); })
-          .then(function (j) {
-            if (j.success) { form.style.display = 'none'; result.className = 'show ok'; result.textContent = t.ok; }
-            else { result.className = 'show'; result.textContent = t.err; }
-          })
-          .catch(function () { result.className = 'show'; result.textContent = t.err; });
-      });
+      document.getElementById("lightbox-close").addEventListener("click", closeLb);
+      lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLb(); });
     })();
   </script>
 
   <!-- GoatCounter — cookieless, no PII, no IP stored -->
-  <script data-goatcounter="https://canaryeclipse.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="https://canaryeclipse.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
