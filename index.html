@@ -138,11 +138,11 @@
           <span class="lang-node" data-key="gallery_title_pl">Zobacz aplikację w akcji</span>
         </h3>
         <div id="gallery" class="flex overflow-x-auto gap-stack-md no-scrollbar snap-x snap-mandatory -mx-3 px-3 py-3">
-          <img alt="Home — eclipse view, countdown and times" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/01-home.png">
-          <img alt="Map of viewpoints across the Canary Islands" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/02-map.png">
-          <img alt="Location detail — eclipse phases" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/03-detail-phases.png">
-          <img alt="Location detail — visibility and horizon" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/04-detail-horizon.png">
-          <img alt="AR sun-finder with ISO solar filter warning" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/05-ar.png">
+          <img data-img="01-home" alt="Home — eclipse view, countdown and times" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/pl/01-home.png">
+          <img data-img="02-map" alt="Map of viewpoints across the Canary Islands" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/pl/02-map.png">
+          <img data-img="03-detail-phases" alt="Location detail — eclipse phases" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/pl/03-detail-phases.png">
+          <img data-img="04-detail-horizon" alt="Location detail — visibility and horizon" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/pl/04-detail-horizon.png">
+          <img data-img="05-ar" alt="AR sun-finder with ISO solar filter warning" loading="lazy" class="h-[500px] rounded-xl flex-none snap-center shadow-2xl border border-border-white cursor-pointer transition duration-200 hover:scale-[1.02] hover:brightness-110 hover:ring-2 hover:ring-primary-fixed-dim" src="screens/pl/05-ar.png">
         </div>
       </div>
     </section>
@@ -344,6 +344,12 @@
         b.classList.toggle("font-bold", on);
         b.classList.toggle("underline", on);
         b.classList.toggle("underline-offset-4", on);
+      });
+      var lc = L.toLowerCase();
+      document.querySelectorAll("#gallery img[data-img]").forEach(function (img) {
+        var base = img.getAttribute("data-img");
+        img.onerror = function () { this.onerror = null; this.src = "screens/pl/" + base + ".png"; };
+        img.src = "screens/" + lc + "/" + base + ".png";
       });
       var t = W3[L.toLowerCase()] || W3.en;
       var ne = document.getElementById("f-name"); if (ne) ne.placeholder = t.namePh;
