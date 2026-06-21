@@ -175,6 +175,16 @@
           <span class="lang-node" data-key="card_body_pl">Zapisz się na listę testerów i pobierz Canary Eclipse wprost z Google Play — bez ostrzeżeń, z automatycznymi aktualizacjami. Podaj adres Google (Gmail) z telefonu; dodam Cię do testu i wyślę link instalacyjny emailem.</span>
           <span class="lang-node" data-key="card_body_de">Trag dich in die Tester-Liste ein und hol dir Canary Eclipse direkt aus Google Play — ohne Sicherheitswarnungen, mit automatischen Updates. Gib die Google-(Gmail-)Adresse von deinem Handy an; ich füge dich zum Test hinzu und schicke dir den Installationslink per E-Mail.</span>
         </p>
+        <div class="flex flex-wrap gap-x-5 gap-y-2 mb-6">
+          <span class="flex items-center gap-2 text-sm font-bold text-primary-fixed-dim">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">autorenew</span>
+            <span class="lang-node lang-active" data-key="benefit_upd_en">Automatic updates</span><span class="lang-node" data-key="benefit_upd_es">Actualizaciones automáticas</span><span class="lang-node" data-key="benefit_upd_pl">Automatyczne aktualizacje</span><span class="lang-node" data-key="benefit_upd_de">Automatische Updates</span>
+          </span>
+          <span class="flex items-center gap-2 text-sm font-bold text-primary-fixed-dim">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">gpp_good</span>
+            <span class="lang-node lang-active" data-key="benefit_warn_en">No Android warnings</span><span class="lang-node" data-key="benefit_warn_es">Sin avisos de Android</span><span class="lang-node" data-key="benefit_warn_pl">Bez ostrzeżeń Androida</span><span class="lang-node" data-key="benefit_warn_de">Keine Android-Warnungen</span>
+          </span>
+        </div>
         <form id="tester-form" class="w-full space-y-4" novalidate>
           <input type="hidden" name="access_key" value="9107a480-4f67-417f-839e-0e208d029d58">
           <input type="hidden" name="subject" value="New Canary Eclipse tester signup">
@@ -277,10 +287,16 @@
               <span class="lang-node" data-key="apk_body_pl">Dla użytkowników Androida znających ten sposób instalacji. Android wysyła ostrzeżenie ponieważ plik nie pochodzi z Play Store — to normalne dla każdego APK.</span>
               <span class="lang-node" data-key="apk_body_de">Für Android-Nutzer, die mit Sideloading vertraut sind. Android warnt dich, weil die Datei nicht aus dem Play Store stammt — das ist bei jedem direkten APK normal und nicht spezifisch für diese App.</span>
             </p>
-            <a class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity" href="https://github.com/Bartek6666/canaryeclipse-site/releases/download/v1.0.0/canary-eclipse-v1.0.0.apk" download>
+            <a class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity" href="https://github.com/Bartek6666/canaryeclipse-site/releases/download/v1.0.0/canary-eclipse-v1.0.0.apk" download onclick="if(window.goatcounter&&window.goatcounter.count){window.goatcounter.count({path:'apk-download',title:'APK download',event:true});}">
               <span class="material-symbols-outlined" aria-hidden="true">get_app</span>Download APK v1.0.0
             </a>
             <p class="text-[12px] text-text-muted mt-2">Android 7.0+ · ~152 MB</p>
+            <p class="text-[12px] text-text-muted mt-3 max-w-lg">
+              <span class="lang-node lang-active" data-key="apk_nudge_en">Want automatic updates and no Android warnings? <a class="underline text-primary-fixed-dim" href="#tester-form">Join via Google Play above</a>.</span>
+              <span class="lang-node" data-key="apk_nudge_es">¿Quieres actualizaciones automáticas y sin avisos de Android? <a class="underline text-primary-fixed-dim" href="#tester-form">Únete por Google Play arriba</a>.</span>
+              <span class="lang-node" data-key="apk_nudge_pl">Chcesz automatyczne aktualizacje i bez ostrzeżeń Androida? <a class="underline text-primary-fixed-dim" href="#tester-form">Zapisz się przez Google Play wyżej</a>.</span>
+              <span class="lang-node" data-key="apk_nudge_de">Willst du automatische Updates und keine Android-Warnungen? <a class="underline text-primary-fixed-dim" href="#tester-form">Mach oben über Google Play mit</a>.</span>
+            </p>
           </div>
         </div>
       </details>
