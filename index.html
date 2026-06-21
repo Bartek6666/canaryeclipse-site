@@ -362,11 +362,10 @@
         b.classList.toggle("underline-offset-4", on);
       });
       var lc = L.toLowerCase();
-      var slc = (lc === "de") ? "en" : lc;
       document.querySelectorAll("#gallery img[data-img]").forEach(function (img) {
         var base = img.getAttribute("data-img");
         img.onerror = function () { this.onerror = null; this.src = "screens/en/" + base + ".png"; };
-        img.src = "screens/" + slc + "/" + base + ".png";
+        img.src = "screens/" + lc + "/" + base + ".png";
       });
       var t = W3[L.toLowerCase()] || W3.en;
       var ne = document.getElementById("f-name"); if (ne) ne.placeholder = t.namePh;
